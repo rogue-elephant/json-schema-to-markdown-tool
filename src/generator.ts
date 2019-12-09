@@ -3,34 +3,25 @@ import { OutputGenerator, Converter } from 'json-conversion-tool';
 import { isArray } from 'util';
 
 export class Generator {
-  public schemas: { schema: any; output: string }[] = [];
   private newline = '\r\n';
-  constructor(jsonSchema: any) {
-    if (isArray(jsonSchema)) {
-      this.schemas = jsonSchema.map(x => {
-        return { schema: x, output: '' };
-      });
-    } else {
-      this.schemas.push({ schema: jsonSchema, output: '' });
-    }
+  constructor() {}
 
-    this.generateMarkdown();
-  }
-
-  private generateMarkdown() {
-    this.schemas.forEach(schemaTuple => {
+  public generateMarkdown(schemas: { schema: any; title: string }[]): { schema: any; output: string; title: string }[] {
+    const schemaOutputs: { schema: any; output: string; title: string }[] = schemas.map(x => ({ ...x, output: '' }));
+    schemaOutputs.forEach(schemaTuple => {
       const schema = schemaTuple.schema;
       const addLine = (prop: string, style: StyleType = 'none', extraSpacing = true) =>
         (schemaTuple.output += this.addLine(prop, style, extraSpacing));
 
-      addLine(schema['title'] || 'Schema', 'h1');
+      addLine(schemaTuple.title || 'Schema', 'h1');
+      addLine(schema['title'], 'h2');
       addLine(schema['$id'], 'h2');
       addLine(schema['description'], 'bold');
       addLine(schema['$schema'], 'italic');
 
       const getFlattenedProps = (propName: string) => {
         addLine(propName, 'h2', false);
-        if(!schema[propName]) {
+        if (!schema[propName]) {
           return;
         }
         Object.keys(schema[propName]).forEach(key => {
@@ -46,6 +37,7 @@ export class Generator {
       getFlattenedProps('properties');
       getFlattenedProps('definitions');
     });
+    return schemaOutputs;
   }
 
   private addLine = (text: string, style: StyleType = 'none', extraSpacing = true) => {
