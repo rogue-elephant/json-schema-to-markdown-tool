@@ -21,14 +21,18 @@ export class Generator {
     this.schemas.forEach(schemaTuple => {
       const schema = schemaTuple.schema;
       const addLine = (prop: string, style: StyleType = 'none', extraSpacing = true) =>
-        this.addLine(schemaTuple.output, prop, style, extraSpacing);
+        (schemaTuple.output += this.addLine(prop, style, extraSpacing));
 
-      this.addLine(schema['$id'], 'h1');
-      this.addLine(schema['description'], 'bold');
-      this.addLine(schema['$schema'], 'codeline');
+      addLine(schema['title'] || 'Schema', 'h1');
+      addLine(schema['$id'], 'h2');
+      addLine(schema['description'], 'bold');
+      addLine(schema['$schema'], 'italic');
 
       const getFlattenedProps = (propName: string) => {
         addLine(propName, 'h2', false);
+        if(!schema[propName]) {
+          return;
+        }
         Object.keys(schema[propName]).forEach(key => {
           schemaTuple.output += new OutputGenerator({
             ...new Converter().convertJson(schema[propName][key]),
@@ -44,13 +48,17 @@ export class Generator {
     });
   }
 
-  private addLine = (output: string, prop: string, style: StyleType = 'none', extraSpacing = true) => {
+  private addLine = (text: string, style: StyleType = 'none', extraSpacing = true) => {
+    if (!text) {
+      return '';
+    }
     const mdStyle = markdownStyles.filter(x => x.style === style)[0];
-    output +=
+    return (
       mdStyle.markdown +
-      prop +
+      text +
       (mdStyle.wraps ? mdStyle.markdown : '') +
       this.newline +
-      (extraSpacing ? this.newline : '');
+      (extraSpacing ? this.newline : '')
+    );
   };
 }
