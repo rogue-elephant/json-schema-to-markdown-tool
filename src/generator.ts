@@ -5,8 +5,13 @@ import { isArray } from 'util';
 export class Generator {
   private newline = '\r\n';
 
-  public generateMarkdown(schemas: Array<{ schema: any; title: string }>): Array<{ schema: any; output: string; title: string }> {
-    const schemaOutputs: Array<{ schema: any; output: string; title: string }> = schemas.map(x => ({ ...x, output: '' }));
+  public generateMarkdown(
+    schemas: Array<{ schema: any; title: string }>,
+  ): Array<{ schema: any; output: string; title: string }> {
+    const schemaOutputs: Array<{ schema: any; output: string; title: string }> = schemas.map(x => ({
+      ...x,
+      output: '',
+    }));
     schemaOutputs.forEach(schemaTuple => {
       const schema = schemaTuple.schema;
       const addLine = (prop: string, style: StyleType = 'none', extraSpacing = true) =>

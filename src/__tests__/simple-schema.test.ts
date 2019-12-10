@@ -6,8 +6,8 @@
 //   ];
 //   const outputs = new Generator().generateMarkdown(json);
 
-//   const expectedOutput = 
-  
+//   const expectedOutput =
+
 //   const output = outputs.map(x => x.output).join('\r\n\r\n');
 //   const foo = 'end';
 // //INDIVIDUAL OBJECT TESTS
