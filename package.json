@@ -1,6 +1,6 @@
 {
   "name": "json-schema-to-markdown-tool",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Provides functionality for converting JSON schemas into markdown",
   "files": [
     "lib/**/*"
