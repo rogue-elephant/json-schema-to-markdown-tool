@@ -15,7 +15,7 @@
     "url": "git+https://github.com/rogue-elephant/json-schema-to-markdown-tool.git"
   },
   "scripts": {
-    "test": "jest --config jestconfig.json",
+    "test": "jest --config jestconfig.json --passWithNoTests",
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "tslint -p tsconfig.json",
