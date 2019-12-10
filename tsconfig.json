@@ -10,7 +10,8 @@
         "strict": true,
         "sourceMap": true,
         "resolveJsonModule": true,
-        "esModuleInterop": true 
+        "esModuleInterop": true,
+        "no-string-literal": false
     },
     "include": [
         "src"
